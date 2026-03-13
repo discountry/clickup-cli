@@ -94,16 +94,21 @@ clickup description 86a1b2c3d "# Summary"
 ```bash
 clickup docs
 clickup docs "API"
+clickup docs "Sprint1" --parent-type FOLDER --limit 100
 clickup doc abc123
 clickup create-doc "Project Notes" --content "# Notes"
-clickup page abc123 page456
-clickup create-page abc123 "New Section" --content "Hello"
+clickup page abc123 page456 --content-format text/plain
+clickup create-page abc123 "New Section" --content "Hello" --sub-title "Summary"
 clickup edit-page abc123 page456 --name "Renamed"
-clickup edit-page abc123 page456 --content "# Updated"
-clickup edit-page abc123 page456 --name "Renamed" --content "# Updated"
+clickup edit-page abc123 page456 --content "# Updated" --content-edit-mode append
+clickup edit-page abc123 page456 --name "Renamed" --sub-title "Updated" --content "# Updated"
 ```
 
-- `edit-page`: pass `--name`, `--content`, or both.
+- `docs`: supports `--id`, `--creator`, `--deleted`, `--archived`, `--parent-id`, `--parent-type`, `--limit`.
+- `doc`: supports `--max-page-depth`.
+- `page`: supports `--content-format text/md|text/plain`.
+- `create-page`: supports `--sub-title`, `--parent-page-id`, `--content-format`.
+- `edit-page`: pass `--name`, `--sub-title`, `--content`, or any combination of them. Also supports `--content-edit-mode` and `--content-format`.
 
 ## Usage rules
 

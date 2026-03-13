@@ -79,11 +79,20 @@ export function createHandlers(getApp) {
       return formatResult(tasks, text);
     },
 
-    async docs({ args }) {
+    async docs({ args, options }) {
       ensureArgRange(args, { max: 1 }, 'docs ["query"]');
       const [query] = args;
       const app = getApp();
-      const docs = await app.docService.searchDocs(query ? { query } : {});
+      const docs = await app.docService.searchDocs({
+        ...(query ? { query } : {}),
+        ...(options.id !== null ? { id: options.id } : {}),
+        ...(options.creator !== null ? { creator: options.creator } : {}),
+        ...(options.deleted ? { deleted: true } : {}),
+        ...(options.archived ? { archived: true } : {}),
+        ...(options.parentId !== null ? { parentId: options.parentId } : {}),
+        ...(options.parentType !== null ? { parentType: options.parentType } : {}),
+        ...(options.limit !== null ? { limit: options.limit } : {}),
+      });
       const text =
         docs.length === 0
           ? query
@@ -326,14 +335,16 @@ export function createHandlers(getApp) {
       return formatResult(task, `Task description updated\nURL: ${task.url}`);
     },
 
-    async doc({ args }) {
+    async doc({ args, options }) {
       ensureArgRange(args, { min: 1, max: 1 }, 'doc <doc_id>');
       const docId = parseDocId(args[0]);
       requireArg(docId, 'Could not parse doc ID from input.', 'doc <doc_id>');
       const app = getApp();
       const [doc, pages] = await Promise.all([
         app.docService.getDoc(docId),
-        app.docService.getDocPageListing(docId),
+        app.docService.getDocPageListing(docId, {
+          ...(options.maxPageDepth !== null ? { maxPageDepth: options.maxPageDepth } : {}),
+        }),
       ]);
       return formatResult(
         { doc, pages },
@@ -341,14 +352,14 @@ export function createHandlers(getApp) {
       );
     },
 
-    async page({ args }) {
+    async page({ args, options }) {
       ensureArgRange(args, { min: 2, max: 2 }, 'page <doc_id> <page_id>');
       const docId = parseDocId(args[0]);
       const pageId = parsePageId(args[1]);
       requireArg(docId, 'Could not parse doc ID from input.', 'page <doc_id> <page_id>');
       requireArg(pageId, 'Page ID required.', 'page <doc_id> <page_id>');
       const app = getApp();
-      const page = await app.docService.getPage(docId, pageId);
+      const page = await app.docService.getPage(docId, pageId, options.contentFormat ?? 'text/md');
       return formatResult(page, formatPage(page));
     },
 
@@ -361,6 +372,9 @@ export function createHandlers(getApp) {
       const app = getApp();
       const page = await app.docService.createPage(docId, title, {
         content: options.content ?? undefined,
+        contentFormat: options.contentFormat ?? undefined,
+        parentPageId: options.parentPageId ?? undefined,
+        subTitle: options.subTitle ?? undefined,
       });
       return formatResult(page, `Page created: ${page.name}\nID: ${page.id}`);
     },
@@ -371,17 +385,20 @@ export function createHandlers(getApp) {
       const pageId = parsePageId(args[1]);
       requireArg(docId, 'Could not parse doc ID from input.', 'edit-page <doc_id> <page_id>');
       requireArg(pageId, 'Page ID required.', 'edit-page <doc_id> <page_id>');
-      if (!options.content && !options.name) {
+      if (options.content === null && options.name === null && options.subTitle === null) {
         throw new CliUsageError(
-          'At least --content or --name is required.',
-          'edit-page <doc_id> <page_id> [--content "content"] [--name "name"]'
+          'At least --content, --name, or --sub-title is required.',
+          'edit-page <doc_id> <page_id> [--content "content"] [--name "name"] [--sub-title "subtitle"]'
         );
       }
       const app = getApp();
 
       const page = await app.docService.editPage(docId, pageId, {
-        ...(options.content ? { content: options.content } : {}),
-        ...(options.name ? { name: options.name } : {}),
+        ...(options.content !== null ? { content: options.content } : {}),
+        ...(options.name !== null ? { name: options.name } : {}),
+        ...(options.subTitle !== null ? { subTitle: options.subTitle } : {}),
+        ...(options.contentEditMode !== null ? { contentEditMode: options.contentEditMode } : {}),
+        ...(options.contentFormat !== null ? { contentFormat: options.contentFormat } : {}),
       });
 
       return formatResult(page, `Page updated successfully${page.id ? `\nID: ${page.id}` : ''}`);

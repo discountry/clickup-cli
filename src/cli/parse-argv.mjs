@@ -19,6 +19,18 @@ function defaultOptions() {
     description: null,
     content: null,
     name: null,
+    subTitle: null,
+    parentPageId: null,
+    contentFormat: null,
+    contentEditMode: null,
+    id: null,
+    creator: null,
+    deleted: false,
+    archived: false,
+    parentId: null,
+    parentType: null,
+    limit: null,
+    maxPageDepth: null,
   };
 }
 

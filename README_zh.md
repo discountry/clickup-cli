@@ -71,14 +71,23 @@ clickup tag 86a1b2c3d "DevOps"
 clickup description 86a1b2c3d "# Summary"
 clickup docs
 clickup docs "API"
+clickup docs "Sprint1" --parent-type FOLDER --limit 100
 clickup doc abc123
 clickup create-doc "Project Notes" --content "# Notes"
-clickup page abc123 page456
-clickup create-page abc123 "New Section" --content "Hello"
-clickup edit-page abc123 page456 --name "Renamed" --content "# Updated"
+clickup page abc123 page456 --content-format text/plain
+clickup create-page abc123 "New Section" --content "Hello" --sub-title "Summary"
+clickup edit-page abc123 page456 --name "Renamed" --sub-title "Updated" --content "# Updated" --content-edit-mode append
 ```
 
 需要原始 API 输出时加 `--json`。
+
+文档和页面命令：
+
+- `docs` 支持 `--id`、`--creator`、`--deleted`、`--archived`、`--parent-id`、`--parent-type`、`--limit`。
+- `doc` 支持 `--max-page-depth`。
+- `page` 支持 `--content-format text/md|text/plain`。
+- `create-page` 支持 `--sub-title`、`--parent-page-id`、`--content-format`。
+- `edit-page` 支持 `--name`、`--sub-title`、`--content`、`--content-edit-mode`、`--content-format`。
 
 ## 开发
 

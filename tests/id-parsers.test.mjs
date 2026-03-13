@@ -36,7 +36,19 @@ test('parseDocId and parsePageId support doc URLs', () => {
     'abc123'
   );
   assert.equal(
+    parseDocId('https://doc.clickup.com/d/h/abc123/hash456/page789'),
+    'abc123'
+  );
+  assert.equal(
     parsePageId('https://app.clickup.com/123/docs/abc123?page=page456'),
     'page456'
+  );
+  assert.equal(
+    parsePageId('https://app.clickup.com/123/v/dc/abc123/page456'),
+    'page456'
+  );
+  assert.equal(
+    parsePageId('https://doc.clickup.com/d/h/abc123/hash456/page789'),
+    'page789'
   );
 });

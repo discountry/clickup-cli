@@ -65,6 +65,11 @@ export function parseDocId(input) {
     return docsMatch[1];
   }
 
+  const shareMatch = input.match(/\/d\/h\/([a-zA-Z0-9_-]+)(?:\/|$)/);
+  if (shareMatch) {
+    return shareMatch[1];
+  }
+
   return input;
 }
 
@@ -80,6 +85,16 @@ export function parsePageId(input) {
   const pageMatch = input.match(/[?&]page=([a-zA-Z0-9_-]+)/);
   if (pageMatch) {
     return pageMatch[1];
+  }
+
+  const docCenterMatch = input.match(/\/dc\/[a-zA-Z0-9_-]+\/([a-zA-Z0-9_-]+)(?:[/?#]|$)/);
+  if (docCenterMatch) {
+    return docCenterMatch[1];
+  }
+
+  const shareMatch = input.match(/\/d\/h\/[a-zA-Z0-9_-]+\/[^/]+\/([a-zA-Z0-9_-]+)(?:[/?#]|$)/);
+  if (shareMatch) {
+    return shareMatch[1];
   }
 
   return input;

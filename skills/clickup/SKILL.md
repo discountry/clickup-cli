@@ -46,9 +46,9 @@ Use the global `clickup` CLI. See `README.md` for installation, configuration, a
 | List docs | `clickup docs ["query"]` |
 | Read doc | `clickup doc <doc_id>` |
 | Create doc | `clickup create-doc "title" [--content "..."]` |
-| Read page | `clickup page <doc_id> <page_id>` |
-| Create page | `clickup create-page <doc_id> "title" [--content "..."]` |
-| Update page | `clickup edit-page <doc_id> <page_id> [--name "..."] [--content "..."]` |
+| Read page | `clickup page <doc_id> <page_id> [--content-format text/plain]` |
+| Create page | `clickup create-page <doc_id> "title" [--content "..."] [--sub-title "..."]` |
+| Update page | `clickup edit-page <doc_id> <page_id> [--name "..."] [--sub-title "..."] [--content "..."]` |
 
 ## Execution
 
@@ -63,5 +63,8 @@ Use the global `clickup` CLI. See `README.md` for installation, configuration, a
 - Status updates allow partial matching.
 - `assign` and `watch` resolve username, email, or user ID.
 - `clickup due <task> clear` and `clickup due <task> none` clear due dates.
-- `clickup edit-page <doc_id> <page_id>` requires `--name` or `--content`.
+- `clickup docs ["query"]` also supports `--id`, `--creator`, `--deleted`, `--archived`, `--parent-id`, `--parent-type`, `--limit`.
+- `clickup doc <doc_id>` supports `--max-page-depth`.
+- `clickup create-page <doc_id> "title"` supports `--parent-page-id`, `--sub-title`, `--content-format`.
+- `clickup edit-page <doc_id> <page_id>` requires `--name`, `--sub-title`, or `--content`. It also supports `--content-edit-mode` and `--content-format`.
 - `watch` posts an `@mention` comment.

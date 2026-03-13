@@ -8,6 +8,18 @@ export const OPTION_DEFINITIONS = [
   { key: 'description', names: ['--description', '--desc'], type: 'string', description: 'Task description for `create`' },
   { key: 'content', names: ['--content', '-c'], type: 'string', description: 'Page or doc content' },
   { key: 'name', names: ['--name', '-n'], type: 'string', description: 'New page name for `edit-page`' },
+  { key: 'subTitle', names: ['--sub-title'], type: 'string', description: 'Page subtitle for `create-page` or `edit-page`' },
+  { key: 'parentPageId', names: ['--parent-page-id'], type: 'string', description: 'Parent page id for `create-page`' },
+  { key: 'contentFormat', names: ['--content-format'], type: 'string', description: 'Page content format: `text/md` or `text/plain`' },
+  { key: 'contentEditMode', names: ['--content-edit-mode'], type: 'string', description: 'Page content update mode: `replace`, `append`, `prepend`' },
+  { key: 'id', names: ['--id'], type: 'string', description: 'Doc id filter for `docs`' },
+  { key: 'creator', names: ['--creator'], type: 'string', description: 'Creator id filter for `docs`' },
+  { key: 'deleted', names: ['--deleted'], type: 'boolean', description: 'Include deleted docs in `docs`' },
+  { key: 'archived', names: ['--archived'], type: 'boolean', description: 'Include archived docs in `docs`' },
+  { key: 'parentId', names: ['--parent-id'], type: 'string', description: 'Parent doc id filter for `docs`' },
+  { key: 'parentType', names: ['--parent-type'], type: 'string', description: 'Parent doc type filter for `docs`' },
+  { key: 'limit', names: ['--limit'], type: 'string', description: 'Page size for paginated docs queries' },
+  { key: 'maxPageDepth', names: ['--max-page-depth'], type: 'string', description: 'Maximum page depth for `doc` page listings' },
 ];
 
 export const COMMAND_DEFINITIONS = [
@@ -36,7 +48,7 @@ export const COMMAND_DEFINITIONS = [
   { name: 'create-doc', usage: 'create-doc "title"', description: 'Create a doc, optionally with --content', section: 'Document Commands' },
   { name: 'page', usage: 'page <doc_id> <page_id>', description: 'Get page content', section: 'Document Commands' },
   { name: 'create-page', usage: 'create-page <doc_id> "title"', description: 'Create a page in a doc', section: 'Document Commands' },
-  { name: 'edit-page', usage: 'edit-page <doc_id> <page_id>', description: 'Edit a page with --content and/or --name', section: 'Document Commands' },
+  { name: 'edit-page', usage: 'edit-page <doc_id> <page_id>', description: 'Edit a page with --name, --sub-title, and/or --content', section: 'Document Commands' },
 ];
 
 export function getCommandDefinition(name) {
